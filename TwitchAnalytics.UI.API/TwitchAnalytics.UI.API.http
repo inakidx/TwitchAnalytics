@@ -1,0 +1,9 @@
+@TwitchAnalytics.UI.API_HostAddress = http://localhost:5008
+
+GET {{TwitchAnalytics.UI.API_HostAddress}}/analytics/user?id=1234
+Accept: application/json
+
+GET {{TwitchAnalytics.UI.API_HostAddress}}/analytics/streams
+Accept: application/json
+
+###
