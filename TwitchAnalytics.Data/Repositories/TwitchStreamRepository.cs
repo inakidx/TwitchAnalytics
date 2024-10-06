@@ -3,7 +3,7 @@ using TwitchAnalytics.Domain.Repositories;
 
 namespace TwitchAnalytics.Data.Repositories;
 
-public class StreamRepository : IStreamRepository
+public class TwitchStreamRepository : ITwitchStreamRepository
 {
     public Task<IEnumerable<TwitchStream>> GetStreamsAlive()
     {

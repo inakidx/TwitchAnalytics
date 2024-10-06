@@ -4,9 +4,9 @@ using TwitchAnalytics.Domain.Repositories;
 
 namespace TwitchAnalytics.Application.Services;
 
-public class StreamService(IStreamRepository streamRepository) : IStreamService
+public class TwitchStreamService(ITwitchStreamRepository streamRepository) : IStreamService
 {
-    private readonly IStreamRepository _streamRepository = streamRepository;
+    private readonly ITwitchStreamRepository _streamRepository = streamRepository;
 
     public async Task<ICollection<TwitchStreamDTO>> GetStreamsAlive()
     {

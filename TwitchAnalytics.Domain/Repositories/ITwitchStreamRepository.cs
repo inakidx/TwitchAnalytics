@@ -2,7 +2,7 @@
 
 namespace TwitchAnalytics.Domain.Repositories;
 
-public interface IStreamRepository
+public interface ITwitchStreamRepository
 {
     Task<IEnumerable<TwitchStream>> GetStreamsAlive();
 }

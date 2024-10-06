@@ -8,11 +8,15 @@
 
   <ItemGroup>
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.4.0" />
+    <PackageReference Include="System.Configuration.ConfigurationManager" Version="8.0.0" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\TwitchAnalytics.Application\TwitchAnalytics.Application.csproj" />
+    <ProjectReference Include="..\TwitchAnalytics.Authorization\TwitchAnalytics.Authorization.csproj" />
+    <ProjectReference Include="..\TwitchAnalytics.Exceptions\TwitchAnalytics.Exceptions.csproj" />
     <ProjectReference Include="..\TwitchAnalytics.Infrastructure.InversionOfControls\TwitchAnalytics.Infrastructure.InversionOfControls.csproj" />
+    <ProjectReference Include="..\TwitchAnalytics.Intrastructure.Configuration\TwitchAnalytics.Intrastructure.Configuration.csproj" />
   </ItemGroup>
 
 </Project>

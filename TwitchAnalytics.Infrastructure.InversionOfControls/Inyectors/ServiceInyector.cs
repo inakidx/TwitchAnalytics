@@ -9,6 +9,6 @@ internal class ServiceInyector
     public static void Inyect(IServiceCollection services)
     {
         services.AddScoped<IStreamerService, StreamerService>();
-        services.AddScoped<IStreamService, StreamService>();
+        services.AddScoped<IStreamService, TwitchStreamService>();
     }
 }

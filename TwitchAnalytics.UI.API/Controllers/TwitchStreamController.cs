@@ -5,7 +5,7 @@ namespace TwitchAnalytics.UI.API.Controllers;
 
 [ApiController]
 [Route("[controller]")]
-public class StreamsController(IStreamService streamsService) : ControllerBase
+public class TwitchStreamController(IStreamService streamsService) : ControllerBase
 {
     private readonly IStreamService _streamsService = streamsService;
 
