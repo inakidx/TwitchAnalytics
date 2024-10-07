@@ -13,7 +13,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\TwitchAnalytics.Domain\TwitchAnalytics.Domain.csproj" />
-    <ProjectReference Include="..\TwitchAnalytics.Intrastructure.Configuration\TwitchAnalytics.Intrastructure.Configuration.csproj" />
   </ItemGroup>
 
 </Project>

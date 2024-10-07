@@ -1,19 +1,16 @@
 using TwitchAnalytics.Exceptions;
 using TwitchAnalytics.Infrastructure.InversionOfControls;
-using TwitchAnalytics.Intrastructure.Configuration;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 
+builder.Services.AddMemoryCache();
 builder.Services.AddInfrastructureServices();
-
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
-
-builder.Services.Configure<TwitchAPIConfiguration>(app.Configuration.GetSection("ConnectionStrings.TwitchAPI"));
 
 app.UseMiddleware<ExceptionHandlerMiddleware>();
 

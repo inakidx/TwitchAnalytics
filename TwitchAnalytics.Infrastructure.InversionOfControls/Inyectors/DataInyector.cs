@@ -9,5 +9,6 @@ public static class DataInyector
     public static void Inyect(IServiceCollection services)
     {
         services.AddScoped<IStreamerRepository, StreamerRepository>();
+        services.AddScoped<ITwitchStreamRepository, TwitchStreamRepository>();
     }
 }

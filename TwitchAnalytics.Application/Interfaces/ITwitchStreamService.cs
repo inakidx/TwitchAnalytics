@@ -2,7 +2,7 @@
 
 namespace TwitchAnalytics.Application.Interfaces;
 
-public interface IStreamService
+public interface ITwitchStreamService
 {
     Task<ICollection<TwitchStreamDTO>> GetStreamsAlive();
 }

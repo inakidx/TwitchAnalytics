@@ -1,11 +1,10 @@
-﻿namespace TwitchAnalytics.Application.DTO
+﻿namespace TwitchAnalytics.Application.DTO;
+
+public class TwitchStreamDTO
 {
-    public class TwitchStreamDTO
-    {
-        public int stream_id;
-        public string? username;
-        public string? title;
-        public int viewer_count;
-        public DateTime started_at;
-    }
+    public string Stream_Id { get; set; } = null!;
+    public string? Username { get; set; }
+    public string? Title { get; set; }
+    public int Viewer_Count { get; set; }
+    public DateTime? Started_At { get; set; }
 }

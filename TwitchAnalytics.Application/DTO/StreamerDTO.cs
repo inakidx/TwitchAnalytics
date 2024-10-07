@@ -2,10 +2,10 @@
 
 public class StreamerDTO
 {
-    public int id;
-    public string? username;
-    public int followers;
-    public int total_views;
-    public DateTime? created_at;
-    public DateTime? last_stream;
+    public string Id { get; set; } = null!;
+    public string? Username { get; set; }
+    public int Followers { get; set; }
+    public int Total_views { get; set; }
+    public DateTime? Created_At { get; set; }
+    public DateTime? Last_Stream { get; set; }
 }

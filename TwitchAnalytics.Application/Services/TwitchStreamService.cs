@@ -4,7 +4,7 @@ using TwitchAnalytics.Domain.Repositories;
 
 namespace TwitchAnalytics.Application.Services;
 
-public class TwitchStreamService(ITwitchStreamRepository streamRepository) : IStreamService
+public class TwitchStreamService(ITwitchStreamRepository streamRepository) : ITwitchStreamService
 {
     private readonly ITwitchStreamRepository _streamRepository = streamRepository;
 
@@ -14,11 +14,11 @@ public class TwitchStreamService(ITwitchStreamRepository streamRepository) : ISt
 
         return streamsAlive.Select(stream => new TwitchStreamDTO()
         {
-            stream_id = stream.Id,
-            username = stream.UserName,
-            title = stream.Title,
-            viewer_count = stream.ViewerCount,
-            started_at = stream.StartedAt
+            Stream_Id = stream.Id.ToString(),
+            Username = stream.User_Name,
+            Title = stream.Title,
+            Viewer_Count = stream.Viewer_Count,
+            Started_At = stream.Started_At
         }).ToList();
     }
 }

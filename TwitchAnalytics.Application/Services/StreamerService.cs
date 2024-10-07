@@ -14,12 +14,12 @@ public class StreamerService(IStreamerRepository streamerRepository) : IStreamer
         Streamer streamer = await _streamerRepository.Get(id);
         return new StreamerDTO()
         {
-            id = streamer.Id,
-            username = streamer.UserName,
-            followers = streamer.TotalFollowers,
-            total_views = streamer.TotalViews,
-            created_at = streamer.CreatedAt,
-            last_stream = streamer.LastStreamAt
+            Id = streamer.Id.ToString(),
+            Username = streamer.Display_Name,
+            Followers = streamer.Total_Followers.GetValueOrDefault(),
+            Total_views = streamer.View_Count.GetValueOrDefault(),
+            Created_At = streamer.Created_At,
+            Last_Stream = streamer.Last_Stream_At
         };
     }
 }

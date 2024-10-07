@@ -7,6 +7,7 @@ public static class ServiceCollecionExtensions
 {
     public static void AddInfrastructureServices(this IServiceCollection services)
     {
+        DataInyector.Inyect(services);
         ServiceInyector.Inyect(services);
     }
 }
