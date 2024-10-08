@@ -1,11 +1,13 @@
 ﻿using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Logging;
 using System.Net;
 
 namespace TwitchAnalytics.Exceptions;
 
-public class ExceptionHandlerMiddleware(RequestDelegate next)
+public class ExceptionHandlerMiddleware(RequestDelegate next, ILogger<ExceptionHandlerMiddleware> logger)
 {
     private readonly RequestDelegate _next = next;
+    private readonly ILogger<ExceptionHandlerMiddleware> _logger = logger;
 
     public async Task Invoke(HttpContext context)
     {
@@ -19,7 +21,7 @@ public class ExceptionHandlerMiddleware(RequestDelegate next)
         }
     }
 
-    private static Task HandleException(HttpContext context, Exception exception)
+    private Task HandleException(HttpContext context, Exception exception)
     {
         var code = HttpStatusCode.InternalServerError;
         var result = string.Empty;
@@ -28,19 +30,19 @@ public class ExceptionHandlerMiddleware(RequestDelegate next)
         {
             case ArgumentNullException:
                 code = HttpStatusCode.BadRequest;
-                result = "The request is missing required information.";
+                result = "Missing 'Id' paramether.";
                 break;
             case InvalidOperationException:
                 code = HttpStatusCode.BadRequest;
-                result = "The request is invalid.";
+                result = "Invalid 'Id' paramether.";
                 break;
             case KeyNotFoundException:
                 code = HttpStatusCode.NotFound;
-                result = "The requested resource was not found.";
+                result = "User not found.";
                 break;
             case UnauthorizedAccessException:
                 code = HttpStatusCode.Unauthorized;
-                result = "You are not authorized to access this resource.";
+                result = "Unauthorized. Twitch access token is invalid or has expired.";
                 break;
             case Exception:
                 code = HttpStatusCode.InternalServerError;
@@ -50,6 +52,8 @@ public class ExceptionHandlerMiddleware(RequestDelegate next)
 
         context.Response.ContentType = "application/json";
         context.Response.StatusCode = (int)code;
+
+        _logger.LogError($"Exception: {exception.ToString()}. Returned-> code: {code}, value: {result}");
 
         return context.Response.WriteAsync(result);
     }

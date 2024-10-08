@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 using TwitchAnalytics.Application.Interfaces;
 
 namespace TwitchAnalytics.UI.API.Controllers;
@@ -13,11 +14,14 @@ public class UserController(ILogger<UserController> logger, IStreamerService str
     [HttpGet]
     public async Task<IActionResult> Get([FromQuery] int id)
     {
+        _logger.LogInformation($"Request with Id:{id} paramether");
         if (id <= 0)
         {
+            _logger.LogError($"Bad request: {id}");
             return BadRequest("Invalid ID");
         }
         var streamer = await _streamerService.Get(id);
+        _logger.LogInformation($"Ok, returned streamer: {JsonConvert.SerializeObject(streamer)}");
         return Ok(streamer);
     }
 }

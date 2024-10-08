@@ -29,6 +29,10 @@ public class StreamerRepository(IConfiguration configuration, AccessTokenService
 
         JObject jsonObject = JObject.Parse(content);
         var dataNode = jsonObject["data"] ?? throw new Exception("user parse error");
+        if (!dataNode.Any())
+        {
+            throw new KeyNotFoundException("user not found");
+        }
         Streamer streamer = JsonConvert.DeserializeObject<ICollection<Streamer>>(dataNode.ToString())?.FirstOrDefault()
             ?? throw new Exception("user parse error");
 
