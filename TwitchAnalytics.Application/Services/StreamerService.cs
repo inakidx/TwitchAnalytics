@@ -16,8 +16,8 @@ public class StreamerService(IStreamerRepository streamerRepository) : IStreamer
         {
             Id = streamer.Id.ToString(),
             Username = streamer.Display_Name,
-            Followers = streamer.Total_Followers.GetValueOrDefault(),
-            Total_views = streamer.View_Count.GetValueOrDefault(),
+            Followers = streamer.Total_Followers,
+            Total_views = streamer.View_Count,
             Created_At = streamer.Created_At,
             Last_Stream = streamer.Last_Stream_At
         };

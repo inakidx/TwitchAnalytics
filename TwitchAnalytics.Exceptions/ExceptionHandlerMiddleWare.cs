@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
+using Newtonsoft.Json;
 using System.Net;
+using System.Text.Json.Serialization;
 
 namespace TwitchAnalytics.Exceptions;
 
@@ -23,38 +25,41 @@ public class ExceptionHandlerMiddleware(RequestDelegate next, ILogger<ExceptionH
 
     private Task HandleException(HttpContext context, Exception exception)
     {
-        var code = HttpStatusCode.InternalServerError;
-        var result = string.Empty;
+        var exceptionDTO = new ExceptionDTO()
+        {
+            Code = HttpStatusCode.InternalServerError,
+            Message = string.Empty
+        };
 
         switch (exception)
         {
             case ArgumentNullException:
-                code = HttpStatusCode.BadRequest;
-                result = "Missing 'Id' paramether.";
+                exceptionDTO.Code = HttpStatusCode.BadRequest;
+                exceptionDTO.Message = "Missing 'Id' paramether.";
                 break;
             case InvalidOperationException:
-                code = HttpStatusCode.BadRequest;
-                result = "Invalid 'Id' paramether.";
+                exceptionDTO.Code = HttpStatusCode.BadRequest;
+                exceptionDTO.Message = "Invalid 'Id' paramether.";
                 break;
             case KeyNotFoundException:
-                code = HttpStatusCode.NotFound;
-                result = "User not found.";
+                exceptionDTO.Code = HttpStatusCode.NotFound;
+                exceptionDTO.Message = "User not found.";
                 break;
             case UnauthorizedAccessException:
-                code = HttpStatusCode.Unauthorized;
-                result = "Unauthorized. Twitch access token is invalid or has expired.";
+                exceptionDTO.Code = HttpStatusCode.Unauthorized;
+                exceptionDTO.Message = "Unauthorized. Twitch access token is invalid or has expired.";
                 break;
             case Exception:
-                code = HttpStatusCode.InternalServerError;
-                result = "An unexpected error occurred.";
+                exceptionDTO.Code = HttpStatusCode.InternalServerError;
+                exceptionDTO.Message = "An unexpected error occurred.";
                 break;
         }
 
         context.Response.ContentType = "application/json";
-        context.Response.StatusCode = (int)code;
+        context.Response.StatusCode = (int)exceptionDTO.Code;
 
-        _logger.LogError($"Exception: {exception.ToString()}. Returned-> code: {code}, value: {result}");
+        _logger.LogError($"Exception: {exception.ToString()}. Returned-> code: {exceptionDTO.Code}, value: {exceptionDTO.Message}");
 
-        return context.Response.WriteAsync(result);
+        return context.Response.WriteAsync(JsonConvert.SerializeObject(exceptionDTO));
     }
 }

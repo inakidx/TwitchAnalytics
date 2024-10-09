@@ -1,6 +1,5 @@
 ﻿using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Configuration;
-using System.Security.Authentication;
 
 namespace TwitchAnalytics.Data.Core.AccessToken;
 
@@ -26,7 +25,7 @@ public class AccessTokenService(IMemoryCache cache, IConfiguration configuration
         }
         if (accessToken == null)
         {
-            throw new AuthenticationException("Failed to generate access token");
+            throw new UnauthorizedAccessException("Failed to generate access token");
         }
         return accessToken;
     }

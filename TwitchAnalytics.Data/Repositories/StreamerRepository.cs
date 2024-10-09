@@ -18,10 +18,17 @@ public class StreamerRepository(IConfiguration configuration, AccessTokenService
         var token = await _accessTokenService.GetAccessToken();
 
         HttpClient client = new();
-        string? uri = _configuration.GetConnectionString("TwitchAPI");
         client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token.Access_Token);
         client.DefaultRequestHeaders.Add("Client-ID", _configuration.GetSection("AuthSettings:ClientId").Value);
 
+        var streamer = await GetStreamer(client, id);
+
+        return streamer;
+    }
+
+    public async Task<Streamer> GetStreamer(HttpClient client, int id)
+    {
+        string? uri = _configuration.GetConnectionString("TwitchAPI");
         var response = await client.GetAsync($"{uri}/users?id={id}");
         response.EnsureSuccessStatusCode();
 
@@ -35,6 +42,14 @@ public class StreamerRepository(IConfiguration configuration, AccessTokenService
         }
         Streamer streamer = JsonConvert.DeserializeObject<ICollection<Streamer>>(dataNode.ToString())?.FirstOrDefault()
             ?? throw new Exception("user parse error");
+
+        response = await client.GetAsync($"{uri}/channels/followers?broadcaster_id={id}");
+        response.EnsureSuccessStatusCode();
+
+        content = await response.Content.ReadAsStringAsync() ?? throw new KeyNotFoundException("user not found");
+        jsonObject = JObject.Parse(content);
+        int totalFollowers = int.Parse(jsonObject["total"]?.ToString() ?? throw new Exception("followers parse error"));
+        streamer.Total_Followers = totalFollowers;
 
         return streamer;
     }
