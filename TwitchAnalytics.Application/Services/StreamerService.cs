@@ -9,7 +9,7 @@ public class StreamerService(IStreamerRepository streamerRepository) : IStreamer
 {
     private readonly IStreamerRepository _streamerRepository = streamerRepository;
 
-    public async Task<StreamerDTO> Get(int id)
+    public async Task<StreamerDTO> Get(string id)
     {
         Streamer streamer = await _streamerRepository.Get(id);
         return new StreamerDTO()

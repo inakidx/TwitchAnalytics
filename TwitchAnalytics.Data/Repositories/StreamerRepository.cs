@@ -13,7 +13,7 @@ public class StreamerRepository(IConfiguration configuration, AccessTokenService
     private readonly IConfiguration _configuration = configuration;
     private readonly AccessTokenService _accessTokenService = accessTokenService;
 
-    public async Task<Streamer> Get(int id)
+    public async Task<Streamer> Get(string id)
     {
         var token = await _accessTokenService.GetAccessToken();
 
@@ -26,7 +26,7 @@ public class StreamerRepository(IConfiguration configuration, AccessTokenService
         return streamer;
     }
 
-    public async Task<Streamer> GetStreamer(HttpClient client, int id)
+    public async Task<Streamer> GetStreamer(HttpClient client, string id)
     {
         string? uri = _configuration.GetConnectionString("TwitchAPI");
         var response = await client.GetAsync($"{uri}/users?id={id}");
@@ -45,11 +45,19 @@ public class StreamerRepository(IConfiguration configuration, AccessTokenService
 
         response = await client.GetAsync($"{uri}/channels/followers?broadcaster_id={id}");
         response.EnsureSuccessStatusCode();
-
         content = await response.Content.ReadAsStringAsync() ?? throw new KeyNotFoundException("user not found");
         jsonObject = JObject.Parse(content);
         int totalFollowers = int.Parse(jsonObject["total"]?.ToString() ?? throw new Exception("followers parse error"));
         streamer.Total_Followers = totalFollowers;
+
+        response = await client.GetAsync($"{uri}/streams?user_id={id}&first=100");
+        response.EnsureSuccessStatusCode();
+        content = await response.Content.ReadAsStringAsync() ?? throw new KeyNotFoundException("streams not found");
+        jsonObject = JObject.Parse(content);
+        dataNode = jsonObject["data"] ?? throw new Exception("streams parse error");
+        var streams = JsonConvert.DeserializeObject<IEnumerable<TwitchStream>>(dataNode.ToString())
+                    ?? throw new Exception("streams parse error");
+        streamer.Last_Stream_At = streams.OrderByDescending(s => s.Started_At).FirstOrDefault()?.Started_At;
 
         return streamer;
     }

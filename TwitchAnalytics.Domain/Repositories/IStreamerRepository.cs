@@ -4,5 +4,5 @@ namespace TwitchAnalytics.Domain.Repositories;
 
 public interface IStreamerRepository
 {
-    public Task<Streamer> Get(int id);
+    public Task<Streamer> Get(string id);
 }

@@ -4,6 +4,6 @@ namespace TwitchAnalytics.Application.Interfaces
 {
     public interface IStreamerService
     {
-        public Task<StreamerDTO> Get(int id);
+        public Task<StreamerDTO> Get(string id);
     }
 }
