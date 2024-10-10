@@ -13,7 +13,12 @@ public class StreamerRepository(IConfiguration configuration, AccessTokenService
         var apiParams = new KeyValuePair<string, string>[] {
             new("id", id)
         };
-        Streamer streamer = (await GetResource<Streamer[]>("users", apiParams))[0];
+        var streamers = await GetResource<Streamer[]>("users", apiParams);
+        if (streamers == null || streamers.Length == 0)
+        {
+            throw new KeyNotFoundException("User not found");
+        }
+        Streamer streamer = streamers[0];
 
         apiParams = [
             new("broadcaster_id", id),
