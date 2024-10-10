@@ -5,7 +5,7 @@ Accept: application/json
 
 ###
 
-GET {{TwitchAnalytics.UI.API_HostAddress}}/analytics/User?id=407388596
+GET {{TwitchAnalytics.UI.API_HostAddress}}/analytics/User?id=92038375
 Accept: application/json
 
 ###
